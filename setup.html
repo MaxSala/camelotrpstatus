@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status del Servidor DayZ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://wallpapers.com/images/hd/dayz-open-field-j0kec0jsmk180xvq.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            background-blend-mode: overlay;
+        }
+        .glass-card {
+            backdrop-filter: blur(20px) brightness(1.2);
+            background: rgba(255, 0, 0, 0.25);
+            box-shadow: 0 8px 30px rgba(255, 0, 0, 0.4);
+            border: 2px solid rgba(255, 0, 0, 0.5);
+            color: #f8f9fa;
+        }
+        h1 {
+            color: #ff4d4d;
+            text-shadow: 0px 0px 20px rgba(255, 0, 0, 1);
+            font-size: 2.8rem;
+        }
+        h2 {
+            color: #ff7f7f;
+            text-shadow: 0px 0px 15px rgba(255, 0, 0, 0.8);
+        }
+        p {
+            color: #ffd1d1;
+            text-shadow: 0px 0px 10px rgba(255, 0, 0, 0.7);
+        }
+        .status-indicator {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <div class="min-h-screen flex items-center justify-center">
+        <!-- Glass Card -->
+        <div class="glass-card max-w-md w-full rounded-lg p-10 text-center">
+            <!-- Header -->
+            <h1 class="font-bold mb-8">DayZ - Estado</h1>
+
+            <!-- Server Status -->
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold mb-2">Servidor</h2>
+                <div class="flex items-center justify-center" id="server-status">
+                    <div class="status-indicator bg-yellow-500 rounded-full mr-2"></div>
+                    <p class="text-base" id="server-status-text">Desconocido</p>
+                </div>
+            </div>
+
+            <!-- Player Information -->
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold mb-2">Jugadores</h2>
+                <p class="text-2xl font-bold text-red-400" id="player-info">-</p>
+            </div>
+
+            <!-- Server Time -->
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold mb-2">Hora del Servidor</h2>
+                <p class="text-2xl font-bold text-red-400" id="server-time">-</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Obtener parámetros desde la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const serverStatus = urlParams.get('status');
+            const players = urlParams.get('players');
+            const maxPlayers = urlParams.get('maxPlayers');
+            const serverTime = urlParams.get('time');
+
+            // Actualizar el estado del servidor
+            const serverStatusDiv = document.getElementById('server-status');
+            const serverStatusText = document.getElementById('server-status-text');
+            if (serverStatus === 'online') {
+                serverStatusDiv.innerHTML = `<div class="status-indicator bg-green-500 rounded-full mr-2"></div><p class="text-base">En Línea</p>`;
+            } else if (serverStatus === 'offline') {
+                serverStatusDiv.innerHTML = `<div class="status-indicator bg-red-500 rounded-full mr-2"></div><p class="text-base">Desconectado</p>`;
+            }
+
+            // Actualizar la información de jugadores
+            const playerInfo = document.getElementById('player-info');
+            if (players && maxPlayers) {
+                playerInfo.textContent = `${players} / ${maxPlayers}`;
+            }
+
+            // Actualizar la hora del servidor
+            const serverTimeElement = document.getElementById('server-time');
+            if (serverTime) {
+                serverTimeElement.textContent = serverTime;
+            }
+        });
+    </script>
+</body>
+</html>
